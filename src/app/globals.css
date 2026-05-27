@@ -1,0 +1,23 @@
+/* 1. Tailwind v4 핵심 스타일 주입 (base, components, utilities가 이 한 줄에 다 들어있어!) */
+@import "tailwindcss";
+
+/* 2. 전역 변수 설정 */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+/* 3. 미디어 쿼리를 활용한 자동 다크 모드 */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+/* 4. 화면 전체에 스타일 적용 */
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
