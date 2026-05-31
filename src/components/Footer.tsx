@@ -1,14 +1,38 @@
 import React from "react";
+import Image from "next/image";
 
 export default function Footer() {
   return (
     <footer className="w-full pt-12 border-t border-gray-100 dark:border-zinc-900 mt-12">
       <div className="flex flex-col gap-2 text-xs text-gray-400 dark:text-zinc-500 leading-relaxed">
-        {/* 상호명 및 저작권 */}
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-1 mb-2">
-          <span className="font-semibold text-gray-600 dark:text-zinc-400 text-sm">
-            마중 (majoong)
-          </span>
+        {/* 상호명 및 저작권 영역 */}
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-2">
+          {/* 로고와 상호명을 묶어 링킹 처리 */}
+          <a
+            href="https://majoong.today"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 group w-fit transition-opacity hover:opacity-80"
+          >
+            {/* 💡 변경 포인트:
+    1. 로고를 감싸는 바깥 상자 크기를 w-7 h-7 (28px)로 살짝 더 키워 여유 공간을 줍니다.
+    2. Image 컴포넌트에 fill을 주고, className에 object-contain을 확실하게 먹여서 
+       어떤 모서리도 절대 잘리지 않고 상자 안에서 원본 비율 그대로 보이게 만듭니다.
+  */}
+            <div className="relative w-7 h-7 overflow-hidden bg-transparent rounded-md flex items-center justify-center shrink-0">
+              <Image
+                src="/majoong-logo.png"
+                alt="마중 로고"
+                fill
+                className="object-contain dark:invert"
+              />
+            </div>
+
+            <span className="font-semibold text-gray-600 dark:text-zinc-400 text-sm group-hover:underline decoration-1 underline-offset-4">
+              마중 (majoong)
+            </span>
+          </a>
+
           <span>
             © {new Date().getFullYear()} majoong. All rights reserved.
           </span>
