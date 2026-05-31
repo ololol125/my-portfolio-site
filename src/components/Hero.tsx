@@ -14,11 +14,20 @@ export default function Hero() {
       </div>
 
       {/* 짧은 자기소개 글 */}
-      <p className="text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-2xl">
-        현재 컴퓨터학부에서 공부하며 가치 있는 서비스를 세상에 내놓기 위해 웹 및
-        모바일 풀스택 기술을 깊이 있게 탐구하고 있습니다. 단순한 기능 구현을
-        넘어 사용자 경험 최적화와 비즈니스 모델을 기술로 검증하는 과정에 흥미가
-        많습니다.
+      <p className="text-base text-gray-500 dark:text-gray-400 leading-relaxed max-w-2x1">
+        현재 <strong>경북대학교 컴퓨터학부</strong>에서 학사과정을 휴학하고
+        있으며, 경북대학교 기계공학과 채영훈 교수님이 운영하시는{" "}
+        <strong>주식회사 CLMT</strong>에서 사원으로 소프트웨어 엔지니어 역할을
+        맡고 있습니다. <br></br>
+        <br></br>
+        또한 <strong>서울대학교 연합전공 인공지능반도체공학</strong> 김남준
+        교수님 연구실에서 NVDIA 및 서울삼성병원과 협력하여 학부부연구생 인턴을
+        하고 있습니다. <br></br>
+        <br></br>
+        마지막으로 <strong>스타트업 '마중(majoong)'</strong> 대표로 활동하며,
+        한국에 방문한 외국인이 처음 방문하는 낯선 여행지에서 즐거운 여행 경험을
+        가질 수 있도록 해당 지역에 거주하거나, 능통한 현지 가이드를 매칭해주는
+        서비스를 제공하고 있습니다.
       </p>
 
       {/* 연락처 및 소셜 링크 */}

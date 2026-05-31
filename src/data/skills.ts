@@ -16,14 +16,14 @@ export const SKILLS_DATA: SkillCategory[] = [
   },
   {
     category: "Backend & Database",
-    skills: ["Node.js", "Express", "Oracle DB (ORCLPDB)"],
+    skills: ["Node.js", "Express", "Oracle DB (ORCLPDB)", "PostgreSQL"],
   },
   {
     category: "Mobile",
-    skills: ["Android Studio", "Kotlin/Java"],
+    skills: ["Android Studio", "Kotlin/Java", "Flutter", "Dart"],
   },
   {
     category: "Tools & Deployment",
-    skills: ["Git", "GitHub", "Vercel"],
+    skills: ["Git", "GitHub", "Vercel", "Postman", "Docker", "Supabase"],
   },
 ];
