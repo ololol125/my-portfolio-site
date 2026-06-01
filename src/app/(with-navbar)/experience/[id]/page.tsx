@@ -1,5 +1,7 @@
-import React from "react";
-import { notFound } from "next/navigation";
+"use client";
+
+import React, { useEffect, useState, use } from "react";
+import { notFound, useRouter } from "next/navigation";
 import { EXPERIENCE_DATA } from "@/data/experience";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,8 +10,13 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-export default async function ExperienceDetailPage({ params }: PageProps) {
-  const { id } = await params;
+export default function ExperienceDetailPage({ params }: PageProps) {
+  // Next.js App Router 사양에 맞게 params 프라미스 언랩
+  const { id } = use(params);
+  const router = useRouter();
+
+  // 💡 가드 연동용 클라이언트 인증 상태 추가
+  const [isAuthorized, setIsAuthorized] = useState(false);
 
   // 1. 고정된 EXPERIENCE_DATA 배열에서 현재 주소의 id와 일치하는 이력 항목 탐색
   const experience = EXPERIENCE_DATA.find((item) => item.id === id);
@@ -19,14 +26,32 @@ export default async function ExperienceDetailPage({ params }: PageProps) {
     notFound();
   }
 
+  // 💡 [새로고침 & 보안 가드 추가] 클라이언트 컴포넌트 마운트 시 세션스토리지 자격 검증
+  useEffect(() => {
+    const targetUrl = `/experience/${id}`;
+    const authStatus = sessionStorage.getItem(`auth_${targetUrl}`);
+
+    if (authStatus !== "true") {
+      alert("보호된 페이지입니다. 목록에서 올바른 단계를 통해 진입해 주세요.");
+      router.replace("/experience");
+    } else {
+      setIsAuthorized(true);
+    }
+  }, [id, router]);
+
   // 3. 사용자가 직접 풀어 쓴 detailContent가 있다면 우선 사용하고, 없다면 description을 대체 적용
   const contentToDisplay =
     experience.detailContent && experience.detailContent.length > 0
       ? experience.detailContent
       : experience.description;
 
+  // 💡 세션 인증이 검증 완료되기 전까지 잘못된 UI 렌더링 노출 및 깜빡임 방지 방어막
+  if (!isAuthorized) {
+    return <div className="min-h-[60vh] bg-[var(--background)]" />;
+  }
+
   return (
-    <main className="max-w-2xl mx-auto py-12 px-4 flex flex-col gap-8">
+    <main className="max-w-2xl mx-auto py-12 px-4 flex flex-col gap-8 animate-fade-in">
       {/* 상단 내비게이션 바 */}
       <Link
         href={`/experience#exp-${id}`}
