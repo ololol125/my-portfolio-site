@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "../globals.css";
 import Navbar from "@/components/Navbar"; // 1. Navbar 불러오기
 
 export const metadata: Metadata = {
