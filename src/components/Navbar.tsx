@@ -8,55 +8,95 @@ export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
 
-  // 기본 모달 및 비밀번호 상태
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [password, setPassword] = useState("");
 
-  // 추가된 상태: 틀린 횟수 및 잠금 기능 관련
+  // 상태 초기값은 클라이언트 사이드(useEffect)에서 localStorage를 읽어와서 설정합니다.
   const [wrongCount, setWrongCount] = useState(0);
   const [isLocked, setIsLocked] = useState(false);
-  const [lockRemainingTime, setLockRemainingTime] = useState(0); // 남은 시간 (초 단위)
+  const [lockRemainingTime, setLockRemainingTime] = useState(0);
 
   const CORRECT_PASSWORD =
     process.env.NEXT_PUBLIC_EXPERIENCE_PASSWORD || "123456";
-  const LOCK_DURATION = 5 * 60; // 제한 시간: 5분 (300초)
+  const LOCK_DURATION = 5 * 60 * 1000; // 5분을 밀리초(ms) 단위로 계산 (300,000ms)
 
-  // 1. 타이머 카운트다운 로직
+  // 1. 컴포넌트 마운트 시 localStorage에서 기존 기록 복구
   useEffect(() => {
-    if (!isLocked || lockRemainingTime <= 0) return;
+    const savedCount = localStorage.getItem("exp_wrong_count");
+    const savedLockUntil = localStorage.getItem("exp_lock_until");
+
+    if (savedCount) {
+      setWrongCount(parseInt(savedCount, 10));
+    }
+
+    if (savedLockUntil) {
+      const lockUntil = parseInt(savedLockUntil, 10);
+      const now = Date.now();
+
+      if (lockUntil > now) {
+        // 아직 잠금 시간이 남아있는 경우
+        setIsLocked(true);
+        setLockRemainingTime(Math.ceil((lockUntil - now) / 1000));
+      } else {
+        // 이미 잠금 시간이 지난 경우 만료 처리
+        localStorage.removeItem("exp_lock_until");
+      }
+    }
+  }, []);
+
+  // 2. 실시간 타이머 및 잠금 해제 체크 로직
+  useEffect(() => {
+    if (!isLocked) return;
 
     const timer = setInterval(() => {
-      setLockRemainingTime((prev) => {
-        if (prev <= 1) {
-          // 5분이 모두 지나면 잠금 해제 및 틀린 횟수 초기화
-          setIsLocked(false);
-          setWrongCount(0);
-          clearInterval(timer);
-          return 0;
-        }
-        return prev - 1;
-      });
+      const savedLockUntil = localStorage.getItem("exp_lock_until");
+      if (!savedLockUntil) {
+        setIsLocked(false);
+        clearInterval(timer);
+        return;
+      }
+
+      const lockUntil = parseInt(savedLockUntil, 10);
+      const now = Date.now();
+      const timeLeft = lockUntil - now;
+
+      if (timeLeft <= 0) {
+        // 5분이 지나면 잠금 해제 및 상태 초기화
+        setIsLocked(false);
+        setWrongCount(0);
+        setLockRemainingTime(0);
+        localStorage.removeItem("exp_lock_until");
+        localStorage.setItem("exp_wrong_count", "0");
+        clearInterval(timer);
+      } else {
+        setLockRemainingTime(Math.ceil(timeLeft / 1000));
+      }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [isLocked, lockRemainingTime]);
+  }, [isLocked]);
 
-  // 2. 비밀번호 6자리 자동 검증 로직
+  // 3. 비밀번호 6자리 자동 검증 로직
   useEffect(() => {
     if (password.length === 6) {
       if (password === CORRECT_PASSWORD) {
         setIsModalOpen(false);
         setPassword("");
-        setWrongCount(0); // 성공 시 틀린 횟수 리셋
+        setWrongCount(0);
+        localStorage.setItem("exp_wrong_count", "0");
+        localStorage.removeItem("exp_lock_until");
         router.push("/experience");
       } else {
         const nextWrongCount = wrongCount + 1;
         setWrongCount(nextWrongCount);
-        setPassword(""); // 입력창 비우기
+        localStorage.setItem("exp_wrong_count", nextWrongCount.toString());
+        setPassword("");
 
         if (nextWrongCount >= 5) {
+          const lockUntilTime = Date.now() + LOCK_DURATION;
           setIsLocked(true);
-          setLockRemainingTime(LOCK_DURATION);
+          setLockRemainingTime(LOCK_DURATION / 1000);
+          localStorage.setItem("exp_lock_until", lockUntilTime.toString());
           alert("비밀번호를 5회 잘못 입력하셨습니다. 5분간 입력이 제한됩니다.");
         } else {
           alert(
@@ -65,9 +105,8 @@ export default function Navbar() {
         }
       }
     }
-  }, [password, wrongCount, CORRECT_PASSWORD, router]);
+  }, [password, wrongCount, CORRECT_PASSWORD, router, LOCK_DURATION]);
 
-  // 남은 시간을 분:초 형태로 포맷팅하는 함수
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
@@ -122,7 +161,6 @@ export default function Navbar() {
               비밀번호 입력
             </h3>
 
-            {/* 잠금 상태에 따른 가이드 메시지 분기 처리 */}
             {isLocked ? (
               <p className="text-xs text-red-500 font-semibold mb-5 leading-relaxed">
                 입력 횟수가 초과되었습니다.
@@ -152,7 +190,6 @@ export default function Navbar() {
                 setPassword(e.target.value.replace(/[^0-9]/g, ""))
               }
               placeholder="••••••"
-              // 잠금 상태일 때는 input 창을 비활성화(disabled)시킵니다.
               disabled={isLocked}
               className={`border border-gray-200 dark:border-zinc-700 rounded-lg p-2 text-center text-2xl tracking-[0.5em] font-mono w-full focus:outline-none focus:ring-2 text-gray-950 dark:text-white ${
                 isLocked
