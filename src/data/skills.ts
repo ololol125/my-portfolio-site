@@ -16,7 +16,14 @@ export const SKILLS_DATA: SkillCategory[] = [
   },
   {
     category: "Backend & Database",
-    skills: ["Node.js", "Express", "Oracle DB (ORCLPDB)", "PostgreSQL"],
+    skills: [
+      "Node.js",
+      "Express",
+      "Oracle DB (ORCLPDB)",
+      "PostgreSQL",
+      "Spring Boot",
+      "C/C++ (Network Programming)",
+    ],
   },
   {
     category: "Mobile",
