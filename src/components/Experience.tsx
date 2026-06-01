@@ -10,16 +10,20 @@ export default function Experience() {
 
       <div className="flex flex-col gap-8 relative border-l border-gray-200 dark:border-zinc-800 ml-4 pl-6">
         {EXPERIENCE_DATA.map((exp, index) => (
-          // 💡 relative 부모 박스를 두어 내부의 투명 링크가 이 카드의 영역만큼만 잡히도록 합니다.
-          <div key={index} className="relative flex flex-col gap-1 group">
+          /* 
+            💡 고도화 포인트: id 부여 및 scroll-mt-24 추가
+            - 상세 페이지에서 해시 링크(#exp-아이디)를 타고 돌아올 때 타겟팅이 되도록 id를 심어줍니다.
+            - 상단 고정 내비게이션 바(Sticky Navbar)에 타이틀이 가려지지 않도록 스크롤 마진을 줍니다.
+          */
+          <div
+            key={exp.id || index}
+            id={`exp-${exp.id}`}
+            className="relative flex flex-col gap-1 group scroll-mt-24"
+          >
             {/* 타임라인 마커 원형 점 */}
             <span className="absolute -left-[29px] top-1.5 w-3 h-3 rounded-full bg-gray-300 dark:bg-zinc-700 border-2 border-white dark:border-black group-hover:bg-zinc-900 dark:group-hover:bg-zinc-100 transition-colors" />
 
-            {/* 1. ✨ [고도화 포인트] 투명 오버레이 링크 
-                이 링크가 카드 전체 영역에 유령처럼 깔리게 됩니다. (inset-0 속성)
-                단, 실제 다운로드 버튼이나 이미지보다 레이어 순위(z-index)를 낮추어 
-                기존 배지 클릭 기능과 절대 간섭하지 않으면서 카드 여백 클릭 시 상세 페이지로 이동시킵니다!
-              */}
+            {/* 1. 투명 오버레이 링크 */}
             <Link
               href={`/experience/${exp.id}`}
               className="absolute inset-0 rounded-xl -m-2 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-900/40 z-0"
@@ -70,7 +74,7 @@ export default function Experience() {
                 ))}
               </ul>
 
-              {/* 기존 다중 이미지 격자 및 마지막 홀수 스팬 레이아웃 그대로 유지! */}
+              {/* 기존 다중 이미지 격자 레이아웃 유지 */}
               {exp.imageUrls && exp.imageUrls.length > 0 && (
                 <div
                   className={`grid gap-3 mt-4 w-full max-w-2xl ${

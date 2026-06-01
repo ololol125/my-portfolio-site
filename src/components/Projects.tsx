@@ -4,9 +4,8 @@ import { PROJECTS_DATA } from "../data/projects"; // 아까 만든 프로젝트 
 export default function Projects() {
   return (
     <section className="flex flex-col gap-6">
-      {/* 섹션 타이틀 */}
+      섹션 타이틀
       <h2 className="text-2xl font-bold tracking-tight">Projects</h2>
-
       {/* 프로젝트 카드들이 들어갈 컨테이너 (세로로 정렬) */}
       <div className="flex flex-col gap-4">
         {PROJECTS_DATA.map((project, index) => (

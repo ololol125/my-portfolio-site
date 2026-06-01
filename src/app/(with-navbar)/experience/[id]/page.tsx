@@ -29,8 +29,8 @@ export default async function ExperienceDetailPage({ params }: PageProps) {
     <main className="max-w-2xl mx-auto py-12 px-4 flex flex-col gap-8">
       {/* 상단 내비게이션 바 */}
       <Link
-        href="/experience"
-        className="text-sm font-medium text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 w-fit transition-colors"
+        href={`/experience#exp-${id}`}
+        className="text-gray-500 hover:text-black dark:text-zinc-400 dark:hover:text-white transition-colors text-sm"
       >
         ← 이력 목록으로 돌아가기
       </Link>
