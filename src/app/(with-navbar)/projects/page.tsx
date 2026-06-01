@@ -1,7 +1,34 @@
-import React from "react";
-// import Projects from "@/components/Projects"; // 나중에 구현 시 주석을 해제하여 사용하세요.
+"use client";
+
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ProjectsPage() {
+  const router = useRouter();
+
+  // 💡 주소창 직접 접근 및 새로고침 방지용 인증 상태 추가
+  const [isAuthorized, setIsAuthorized] = useState(false);
+
+  useEffect(() => {
+    const targetUrl = "/projects";
+    const authStatus = sessionStorage.getItem(`auth_${targetUrl}`);
+
+    // sessionStorage에 인증 기록이 없다면 올바르지 않은 접근으로 판단하여 차단
+    if (authStatus !== "true") {
+      alert(
+        "보호된 페이지입니다. 메뉴를 통해 올바른 단계를 거쳐 진입해 주세요.",
+      );
+      router.replace("/"); // 홈 화면이나 이전 화면으로 안전하게 리다이렉트
+    } else {
+      setIsAuthorized(true);
+    }
+  }, [router]);
+
+  // 💡 세션 인증이 검증 완료되기 전까지 레이아웃 깜빡임(FOUC) 및 내부 콘텐츠 노출 방지
+  if (!isAuthorized) {
+    return <div className="min-h-[60vh] bg-[var(--background)]" />;
+  }
+
   return (
     <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in">
       {/* 아이콘 영역 */}
