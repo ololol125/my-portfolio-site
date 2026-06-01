@@ -10,6 +10,8 @@ export default function Navbar() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [password, setPassword] = useState("");
+  // 💡 어떤 보호된 페이지로 가려는지 저장하는 상태 추가
+  const [targetPath, setTargetPath] = useState("");
 
   // 상태 초기값은 클라이언트 사이드(useEffect)에서 localStorage를 읽어와서 설정합니다.
   const [wrongCount, setWrongCount] = useState(0);
@@ -85,7 +87,11 @@ export default function Navbar() {
         setWrongCount(0);
         localStorage.setItem("exp_wrong_count", "0");
         localStorage.removeItem("exp_lock_until");
-        router.push("/experience");
+
+        // 💡 인증 성공 시, 미리 설정해둔 targetPath로 이동합니다.
+        if (targetPath) {
+          router.push(targetPath);
+        }
       } else {
         const nextWrongCount = wrongCount + 1;
         setWrongCount(nextWrongCount);
@@ -105,7 +111,14 @@ export default function Navbar() {
         }
       }
     }
-  }, [password, wrongCount, CORRECT_PASSWORD, router, LOCK_DURATION]);
+  }, [
+    password,
+    wrongCount,
+    CORRECT_PASSWORD,
+    router,
+    LOCK_DURATION,
+    targetPath,
+  ]);
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -113,10 +126,11 @@ export default function Navbar() {
     return `${minutes}분 ${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}초`;
   };
 
+  // 보호할 페이지 목록을 핸들링하기 쉽게 도메인 관심사 분리
   const navItems = [
-    { name: "Home", path: "/" },
-    { name: "Experience", path: "/experience" },
-    { name: "Projects", path: "/projects" },
+    { name: "Home", path: "/", protected: false },
+    { name: "Experience", path: "/experience", protected: true },
+    { name: "Projects", path: "/projects", protected: true }, // 💡 true로 변경
   ];
 
   return (
@@ -125,7 +139,6 @@ export default function Navbar() {
       <nav className="sticky top-0 z-50 w-full py-6 flex gap-6 text-sm font-medium border-b border-gray-100 dark:border-zinc-900 bg-[var(--background)]/80 backdrop-blur-md">
         {navItems.map((item) => {
           const isActive = pathname === item.path;
-          const isExperience = item.path === "/experience";
 
           const className = `transition-colors hover:text-black dark:hover:text-white text-left ${
             isActive
@@ -133,11 +146,15 @@ export default function Navbar() {
               : "text-gray-400 dark:text-zinc-500"
           }`;
 
-          if (isExperience) {
+          // 💡 보호된 페이지인 경우 버튼으로 렌더링하고 모달을 띄웁니다.
+          if (item.protected) {
             return (
               <button
                 key={item.path}
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => {
+                  setTargetPath(item.path); // 가고자 하는 경로 지정
+                  setIsModalOpen(true);
+                }}
                 className={className}
               >
                 {item.name}
@@ -172,7 +189,9 @@ export default function Navbar() {
               </p>
             ) : (
               <p className="text-xs text-gray-400 dark:text-zinc-500 mb-5 leading-relaxed">
-                Experience 페이지에 진입하려면
+                {/* 💡 진입하려는 페이지에 맞춰 가변 메시지 출력 */}
+                {targetPath === "/experience" ? "Experience" : "Projects"}{" "}
+                페이지에 진입하려면
                 <br />
                 비밀번호 6자리를 입력해주세요.
                 <br />
@@ -203,6 +222,7 @@ export default function Navbar() {
               onClick={() => {
                 setIsModalOpen(false);
                 setPassword("");
+                setTargetPath("");
               }}
               className="mt-5 text-xs text-gray-400 hover:text-gray-600 dark:hover:text-zinc-300 transition-colors"
             >
