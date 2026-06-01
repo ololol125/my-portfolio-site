@@ -48,7 +48,7 @@ export default function Hero() {
         맡고 있습니다. <br></br>
         <br></br>
         또한 <strong>서울대학교 연합전공 인공지능반도체공학</strong> 김남준
-        교수님 연구실에서 NVDIA 및 서울삼성병원과 협력하여 학부부연구생 인턴을
+        교수님 연구실에서 NVDIA 및 서울삼성병원과 협력하여 학부 연구생 인턴을
         하고 있습니다. <br></br>
         <br></br>
         마지막으로 <strong>스타트업 '마중(majoong)'</strong> 대표로 활동하며,
