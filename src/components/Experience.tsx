@@ -16,10 +16,10 @@ export default function Experience() {
             <span className="absolute -left-[29px] top-1.5 w-3 h-3 rounded-full bg-gray-300 dark:bg-zinc-700 border-2 border-white dark:border-black group-hover:bg-zinc-900 dark:group-hover:bg-zinc-100 transition-colors" />
 
             {/* 1. ✨ [고도화 포인트] 투명 오버레이 링크 
-               이 링크가 카드 전체 영역에 유령처럼 깔리게 됩니다. (inset-0 속성)
-               단, 실제 다운로드 버튼이나 이미지보다 레이어 순위(z-index)를 낮추어 
-               기존 배지 클릭 기능과 절대 간섭하지 않으면서 카드 여백 클릭 시 상세 페이지로 이동시킵니다!
-            */}
+                이 링크가 카드 전체 영역에 유령처럼 깔리게 됩니다. (inset-0 속성)
+                단, 실제 다운로드 버튼이나 이미지보다 레이어 순위(z-index)를 낮추어 
+                기존 배지 클릭 기능과 절대 간섭하지 않으면서 카드 여백 클릭 시 상세 페이지로 이동시킵니다!
+              */}
             <Link
               href={`/experience/${exp.id}`}
               className="absolute inset-0 rounded-xl -m-2 transition-colors hover:bg-zinc-50 dark:hover:bg-zinc-900/40 z-0"
