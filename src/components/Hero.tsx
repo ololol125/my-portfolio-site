@@ -12,7 +12,7 @@ export default function Hero() {
           </h1>
           <p className="text-lg text-gray-600 dark:text-zinc-400 leading-relaxed">
             문제를 정의하고, 코드로 솔루션을 구축하는 개발자입니다. 현재 외국인
-            관광객과 로컬 가이드를 매칭하는 스타트업{" "}
+            관광객과 한국인 현지 로컬 가이드를 매칭하는 스타트업{" "}
             <span className="font-semibold text-black dark:text-white">
               마중 (majoong)
             </span>

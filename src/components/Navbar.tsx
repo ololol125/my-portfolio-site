@@ -17,7 +17,7 @@ export default function Navbar() {
   const [lockRemainingTime, setLockRemainingTime] = useState(0);
 
   const CORRECT_PASSWORD =
-    process.env.NEXT_PUBLIC_EXPERIENCE_PASSWORD || "123456";
+    process.env.NEXT_PUBLIC_EXPERIENCE_PASSWORD || "192837";
   const LOCK_DURATION = 5 * 60 * 1000; // 5분을 밀리초(ms) 단위로 계산 (300,000ms)
 
   // 1. 컴포넌트 마운트 시 localStorage에서 기존 기록 복구

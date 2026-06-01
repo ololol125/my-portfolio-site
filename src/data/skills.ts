@@ -24,6 +24,6 @@ export const SKILLS_DATA: SkillCategory[] = [
   },
   {
     category: "Tools & Deployment",
-    skills: ["Git", "GitHub", "Vercel", "Postman", "Docker", "Supabase"],
+    skills: ["Git", "GitHub", "Vercel", "Postman", "Docker", "Supabase", "n8n"],
   },
 ];
