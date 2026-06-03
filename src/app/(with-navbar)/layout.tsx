@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "../globals.css";
 import Navbar from "@/components/Navbar"; // 1. Navbar 불러오기
+import { Analytics } from "@vercel/analytics/next"; // 추가\
 
 export const metadata: Metadata = {
   title: "박영현 | Portfolio",
@@ -21,6 +22,7 @@ export default function RootLayout({
           <Navbar />
           <div className="flex flex-col gap-24">{children}</div>
         </main>
+        <Analytics />
       </body>
     </html>
   );
