@@ -59,6 +59,23 @@ export default function ExperienceDetailPage({ params }: PageProps) {
       >
         ← 이력 목록으로 돌아가기
       </Link>
+      <div className="mt-8 p-5 rounded-2xl border border-zinc-100 dark:border-zinc-800/80 bg-zinc-50/40 dark:bg-zinc-900/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-inner">
+        <div className="flex flex-col gap-0.5">
+          <h3 className="text-base font-bold text-gray-900 dark:text-white">
+            📚 인사이트 라이브러리
+          </h3>
+          <p className="text-xs text-zinc-400">
+            이 프로젝트를 빌드하고 도약시키는 과정에 영감을 준 서재 리스트를
+            확인하세요.
+          </p>
+        </div>
+        <Link
+          href={`/experience/${experience.id}/book`}
+          className="px-4 py-2 text-center rounded-xl bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 text-xs font-bold shadow transition-all duration-200"
+        >
+          독서 노트 보러가기 →
+        </Link>
+      </div>
 
       {/* 헤더 섹션: 기간, 대제목, 직무 역할 */}
       <div className="flex flex-col gap-2">
