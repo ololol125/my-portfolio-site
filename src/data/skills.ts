@@ -23,6 +23,7 @@ export const SKILLS_DATA: SkillCategory[] = [
       "PostgreSQL",
       "Spring Boot",
       "C/C++ (Network Programming)",
+      "Prisma ORM",
     ],
   },
   {
